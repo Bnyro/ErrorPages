@@ -23,6 +23,8 @@ json = requests.get("https://webconcepts.info/concepts/http-status-code.json").j
 if not os.path.exists(targetFolder):
     os.mkdir(targetFolder)
 
+shutil.copytree("assets", targetFolder + "assets")
+
 for error in json["values"]:
     if int(error["value"]) >= 400:
         createFile(error)
