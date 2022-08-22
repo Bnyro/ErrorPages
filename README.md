@@ -41,3 +41,9 @@ ErrorDocument 501 /error/501.html
 ErrorDocument 502 /error/502.html
 ErrorDocument 503 /error/503.html
 ```
+
+## Lighttpd Integration
+
+```lighttpd
+server.errorfile-prefix = "/var/www/error"
+```
