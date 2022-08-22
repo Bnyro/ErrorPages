@@ -5,12 +5,16 @@
 import requests
 import shutil
 import json
+import sys
 import os
 
 targetFolder = "dist/"
 variants = ["gradient", "space"]
 
-variant = variants[1]
+variant = variants[0]
+for argument in sys.argv:
+    if argument in variants:
+        variant = argument
 
 def createFile(error, errorCode):
     fileName = targetFolder + errorCode + ".html"
@@ -35,7 +39,8 @@ with open("errors.json") as f:
 if not os.path.exists(targetFolder):
     os.mkdir(targetFolder)
 
-shutil.rmtree(targetFolder + "assets")
+if os.path.exists(targetFolder + "assets"):
+    shutil.rmtree(targetFolder + "assets")
 shutil.copytree("assets", targetFolder + "assets")
 
 for errorCode in errors.keys():
