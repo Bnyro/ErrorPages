@@ -1,32 +1,43 @@
 #!/usr/bin/python
 
+# error code source: https://github.com/MattIPv4/status-codes
+
 import requests
 import shutil
+import json
 import os
 
 targetFolder = "dist/"
+variants = ["gradient", "space"]
 
-def createFile(error):
-    fileName = targetFolder + error["value"] + ".html"
-    shutil.copy("template.html", fileName)
+variant = variants[1]
+
+def createFile(error, errorCode):
+    fileName = targetFolder + errorCode + ".html"
+    shutil.copy("templates/" + variant + ".html", fileName)
 
     filedata = None
     with open(fileName, "r") as f:
         filedata = f.read()
 
-    filedata = filedata.replace("$ErrorCode", error["value"])
-    filedata = filedata.replace("$ErrorName", error["description"])
+    filedata = filedata.replace("$ErrorCode", errorCode)
+    filedata = filedata.replace("$ErrorName", error["message"])
+    filedata = filedata.replace("$ErrorDescription", error["description"])
 
     with open(fileName, "w") as f:
         f.write(filedata)
 
-json = requests.get("https://webconcepts.info/concepts/http-status-code.json").json()
+# json = requests.get("https://status.js.org/codes.json").json()
+errors = None
+with open("errors.json") as f:
+    errors = json.load(f)
 
 if not os.path.exists(targetFolder):
     os.mkdir(targetFolder)
 
+shutil.rmtree(targetFolder + "assets")
 shutil.copytree("assets", targetFolder + "assets")
 
-for error in json["values"]:
-    if int(error["value"]) >= 400:
-        createFile(error)
+for errorCode in errors.keys():
+    if int(errorCode) >= 400:
+        createFile(errors[errorCode], errorCode)
