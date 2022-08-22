@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-# error code source: https://github.com/MattIPv4/status-codes
+# error codes source: https://github.com/MattIPv4/status-codes
 
 import requests
 import shutil
@@ -9,7 +9,7 @@ import sys
 import os
 
 targetFolder = "dist/"
-variants = ["gradient", "space"]
+variants = ["gradient", "space", "light"]
 
 variant = variants[0]
 for argument in sys.argv:
